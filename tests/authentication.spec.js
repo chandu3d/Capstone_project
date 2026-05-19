@@ -2,17 +2,21 @@ const { test, expect } = require('@playwright/test');
 
 test.setTimeout(60000);
 
+async function openLoginPage(page) {
+  await page.goto('https://demo.nopcommerce.com/login', {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000
+  });
+
+  await page.locator('#Email').waitFor({ state: 'visible', timeout: 15000 });
+}
+
 // Test Case 1
 test('Login with invalid credentials', async ({ page }) => {
-  await page.goto('https://demo.nopcommerce.com/login');
-  await page.waitForLoadState('networkidle');
+  await openLoginPage(page);
 
-  await page.locator('#Email').waitFor();
   await page.fill('#Email', 'invalid@test.com');
-
-  await page.locator('#Password').waitFor();
   await page.fill('#Password', 'wrongpassword');
-
   await page.locator('button.login-button').click();
 
   await expect(page).toHaveURL(/login/);
@@ -20,10 +24,8 @@ test('Login with invalid credentials', async ({ page }) => {
 
 // Test Case 2
 test('Forgot password navigation', async ({ page }) => {
-  await page.goto('https://demo.nopcommerce.com/login');
-  await page.waitForLoadState('networkidle');
+  await openLoginPage(page);
 
-  await page.locator('text=Forgot password?').waitFor();
   await page.locator('text=Forgot password?').click();
 
   await expect(page).toHaveURL(/passwordrecovery/);
@@ -31,16 +33,14 @@ test('Forgot password navigation', async ({ page }) => {
 
 // Test Case 3
 test('Login page title validation', async ({ page }) => {
-  await page.goto('https://demo.nopcommerce.com/login');
-  await page.waitForLoadState('networkidle');
+  await openLoginPage(page);
 
   await expect(page).toHaveTitle(/nopCommerce demo store/);
 });
 
 // Test Case 4
 test('Login with empty email and password', async ({ page }) => {
-  await page.goto('https://demo.nopcommerce.com/login');
-  await page.waitForLoadState('networkidle');
+  await openLoginPage(page);
 
   await page.locator('button.login-button').click();
 
@@ -49,8 +49,7 @@ test('Login with empty email and password', async ({ page }) => {
 
 // Test Case 5
 test('Remember me checkbox validation', async ({ page }) => {
-  await page.goto('https://demo.nopcommerce.com/login');
-  await page.waitForLoadState('networkidle');
+  await openLoginPage(page);
 
   await page.check('#RememberMe');
 
@@ -59,8 +58,89 @@ test('Remember me checkbox validation', async ({ page }) => {
 
 // Test Case 6
 test('Login page heading validation', async ({ page }) => {
-  await page.goto('https://demo.nopcommerce.com/login');
-  await page.waitForLoadState('networkidle');
+  await openLoginPage(page);
 
   await expect(page.locator('h1')).toContainText('Welcome, Please Sign In!');
+});
+
+// Test Case 7
+test('Email required field validation', async ({ page }) => {
+  await openLoginPage(page);
+
+  await page.fill('#Password', 'Test@123');
+  await page.locator('button.login-button').click();
+
+  await expect(page).toHaveURL(/login/);
+});
+
+// Test Case 8
+test('Password required field validation', async ({ page }) => {
+  await openLoginPage(page);
+
+  await page.fill('#Email', 'sample@test.com');
+  await page.locator('button.login-button').click();
+
+  await expect(page).toHaveURL(/login/);
+});
+
+// Test Case 9
+test('Email textbox accepts valid email input', async ({ page }) => {
+  await openLoginPage(page);
+
+  await page.fill('#Email', 'sample@test.com');
+
+  await expect(page.locator('#Email')).toHaveValue('sample@test.com');
+});
+
+// Test Case 10
+test('Password textbox accepts input', async ({ page }) => {
+  await openLoginPage(page);
+
+  await page.fill('#Password', 'Test@123');
+
+  await expect(page.locator('#Password')).toHaveValue('Test@123');
+});
+
+// Test Case 11
+test('Forgot password page heading validation', async ({ page }) => {
+  await openLoginPage(page);
+
+  await page.locator('text=Forgot password?').click();
+
+  await expect(page.locator('h1')).toContainText('Password recovery');
+});
+
+// Test Case 12
+test('Password recovery with empty email validation', async ({ page }) => {
+  await page.goto('https://demo.nopcommerce.com/passwordrecovery', {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000
+  });
+
+  await page.locator('#Email').waitFor({ state: 'visible', timeout: 15000 });
+
+  await page.locator('button.password-recovery-button').click();
+
+  await expect(page).toHaveURL(/passwordrecovery/);
+});
+
+// Test Case 13
+test('Login button visibility validation', async ({ page }) => {
+  await openLoginPage(page);
+
+  await expect(page.locator('button.login-button')).toBeVisible();
+});
+
+// Test Case 14
+test('Email textbox visibility validation', async ({ page }) => {
+  await openLoginPage(page);
+
+  await expect(page.locator('#Email')).toBeVisible();
+});
+
+// Test Case 15
+test('Password textbox visibility validation', async ({ page }) => {
+  await openLoginPage(page);
+
+  await expect(page.locator('#Password')).toBeVisible();
 });

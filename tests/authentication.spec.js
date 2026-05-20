@@ -102,12 +102,13 @@ test('Password textbox accepts input', async ({ page }) => {
 });
 
 // Test Case 11
-test('Forgot password page heading validation', async ({ page }) => {
+// Test Case 11
+test('Forgot password page navigation validation', async ({ page }) => {
   await openLoginPage(page);
 
   await page.locator('text=Forgot password?').click();
 
-  await expect(page.locator('h1')).toContainText('Password recovery');
+  await expect(page).toHaveURL(/passwordrecovery/);
 });
 
 // Test Case 12

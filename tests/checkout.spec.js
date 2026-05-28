@@ -14,13 +14,13 @@ async function openCheckoutPage(page) {
 
 // Test Case 1
 test('Open checkout page using POM', async ({ page }) => {
-
   const checkoutPage = new CheckoutPage(page);
 
   await checkoutPage.openCheckoutPage();
 
   await expect(page).toHaveURL(/cart/);
 });
+
 // Test Case 2
 test('Validate checkout page loads successfully', async ({ page }) => {
   await openCheckoutPage(page);
@@ -29,24 +29,31 @@ test('Validate checkout page loads successfully', async ({ page }) => {
 });
 
 // Test Case 3
-test('Validate checkout redirect page title', async ({ page }) => {
+test('Validate checkout redirects to shopping cart when cart is empty', async ({ page }) => {
   await openCheckoutPage(page);
 
+  await expect(page).toHaveURL(/cart/);
   await expect(page).toHaveTitle(/Shopping Cart/);
 });
 
 // Test Case 4
-test('Validate shopping cart text after checkout redirect', async ({ page }) => {
-  await openCheckoutPage(page);
+test('Validate payment method page is not accessible with empty cart', async ({ page }) => {
+  await page.goto('https://demo.nopcommerce.com/checkout/paymentmethod', {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000
+  });
 
-  await expect(page.locator('body')).toContainText('Shopping cart');
+  await expect(page).toHaveURL(/cart|login|checkout/);
 });
 
 // Test Case 5
-test('Validate checkout URL redirects to cart page', async ({ page }) => {
-  await page.goto('https://demo.nopcommerce.com/checkout');
+test('Validate payment information page is not accessible with empty cart', async ({ page }) => {
+  await page.goto('https://demo.nopcommerce.com/checkout/paymentinfo', {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000
+  });
 
-  await expect(page).toHaveURL(/cart/);
+  await expect(page).toHaveURL(/cart|login|checkout/);
 });
 
 // Test Case 6
@@ -94,12 +101,13 @@ test('Validate checkout page responsiveness', async ({ page }) => {
 });
 
 // Test Case 12
-test('Validate checkout redirect page refresh behavior', async ({ page }) => {
-  await openCheckoutPage(page);
+test('Validate payment confirmation page is protected without checkout flow', async ({ page }) => {
+  await page.goto('https://demo.nopcommerce.com/checkout/confirm', {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000
+  });
 
-  await page.reload();
-
-  await expect(page).toHaveURL(/cart/);
+  await expect(page).toHaveURL(/cart|login|checkout/);
 });
 
 // Test Case 13

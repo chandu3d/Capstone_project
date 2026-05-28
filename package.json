@@ -18,6 +18,8 @@
   "homepage": "https://github.com/chandu3d/Capstone_project#readme",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.0"
+    "@types/node": "^25.9.0",
+    "allure-commandline": "^2.42.0",
+    "allure-playwright": "^3.9.0"
   }
 }

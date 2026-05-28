@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const { ProductPage } = require('../pages/productPage');
 
 test.setTimeout(60000);
 
@@ -12,11 +13,13 @@ async function openHomePage(page) {
 }
 
 // Test Case 1
-test('Search product with valid keyword', async ({ page }) => {
-  await openHomePage(page);
+test('Search product with valid keyword using POM', async ({ page }) => {
 
-  await page.fill('.search-box-text', 'computer');
-  await page.locator('button.search-box-button').click();
+  const productPage = new ProductPage(page);
+
+  await productPage.openHomePage();
+
+  await productPage.searchProduct('computer');
 
   await expect(page).toHaveURL(/search/);
 });

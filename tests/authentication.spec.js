@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('../pages/loginPage');
 
 test.setTimeout(60000);
 
@@ -12,12 +13,17 @@ async function openLoginPage(page) {
 }
 
 // Test Case 1
-test('Login with invalid credentials', async ({ page }) => {
-  await openLoginPage(page);
+test('Login with invalid credentials using POM', async ({ page }) => {
 
-  await page.fill('#Email', 'invalid@test.com');
-  await page.fill('#Password', 'wrongpassword');
-  await page.locator('button.login-button').click();
+  const loginPage = new LoginPage(page);
+
+  await loginPage.openLoginPage();
+
+  await loginPage.enterEmail('invalid@test.com');
+
+  await loginPage.enterPassword('wrongpassword');
+
+  await loginPage.clickLoginButton();
 
   await expect(page).toHaveURL(/login/);
 });

@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const { CartPage } = require('../pages/cartPage');
 
 test.setTimeout(60000);
 
@@ -12,8 +13,11 @@ async function openCartPage(page) {
 }
 
 // Test Case 1
-test('Open shopping cart page', async ({ page }) => {
-  await openCartPage(page);
+test('Open shopping cart page using POM', async ({ page }) => {
+
+  const cartPage = new CartPage(page);
+
+  await cartPage.openCartPage();
 
   await expect(page).toHaveURL(/cart/);
 });

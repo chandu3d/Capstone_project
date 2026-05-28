@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const { CheckoutPage } = require('../pages/checkoutPage');
 
 test.setTimeout(60000);
 
@@ -12,12 +13,14 @@ async function openCheckoutPage(page) {
 }
 
 // Test Case 1
-test('Open checkout page redirects to cart', async ({ page }) => {
-  await openCheckoutPage(page);
+test('Open checkout page using POM', async ({ page }) => {
+
+  const checkoutPage = new CheckoutPage(page);
+
+  await checkoutPage.openCheckoutPage();
 
   await expect(page).toHaveURL(/cart/);
 });
-
 // Test Case 2
 test('Validate checkout page loads successfully', async ({ page }) => {
   await openCheckoutPage(page);

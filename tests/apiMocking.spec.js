@@ -266,17 +266,17 @@ test('Mock newsletter API should return subscribed response', async ({ page }) =
   expect(data.subscribed).toBe(true);
 });
 
-// Test Case 16 - Skipped
+// Test Case 16 
 test.skip('Skipped API test for future product service validation', async ({ page }) => {
   await page.goto('https://demo.nopcommerce.com/future-product-api');
 });
 
-// Test Case 17 - Skipped
+// Test Case 17 
 test.skip('Skipped API test for future order invoice validation', async ({ page }) => {
   await page.goto('https://demo.nopcommerce.com/future-invoice-api');
 });
 
-// Test Case 18 - Fixme
+// Test Case 18 
 test.fixme('Fixme test for payment gateway API validation', async ({ page }) => {
   await page.goto('https://demo.nopcommerce.com/payment-gateway-api');
 });

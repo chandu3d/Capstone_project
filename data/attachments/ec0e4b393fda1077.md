@@ -1,0 +1,188 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: product.spec.js >> Validate Computers page heading
+- Location: tests/product.spec.js:80:1
+
+# Error details
+
+```
+Error: expect(locator).toContainText(expected) failed
+
+Locator: locator('h1')
+Expected substring: "Computers"
+Received string:    "demo.nopcommerce.com"
+Timeout: 5000ms
+
+Call log:
+  - Expect "toContainText" with timeout 5000ms
+  - waiting for locator('h1')
+    13 × locator resolved to <h1>demo.nopcommerce.com</h1>
+       - unexpected value "demo.nopcommerce.com"
+
+```
+
+```yaml
+- heading "demo.nopcommerce.com" [level=1]
+```
+
+# Test source
+
+```ts
+  1   | const { test, expect } = require('@playwright/test');
+  2   | const { ProductPage } = require('../pages/productPage');
+  3   | 
+  4   | test.setTimeout(60000);
+  5   | 
+  6   | async function openHomePage(page) {
+  7   |   await page.goto('https://demo.nopcommerce.com/', {
+  8   |     waitUntil: 'domcontentloaded',
+  9   |     timeout: 60000
+  10  |   });
+  11  | 
+  12  |   await page.locator('.search-box-text').waitFor({ state: 'visible', timeout: 15000 });
+  13  | }
+  14  | 
+  15  | // Test Case 1
+  16  | test('Search product with valid keyword using POM', async ({ page }) => {
+  17  | 
+  18  |   const productPage = new ProductPage(page);
+  19  | 
+  20  |   await productPage.openHomePage();
+  21  | 
+  22  |   await productPage.searchProduct('computer');
+  23  | 
+  24  |   await expect(page).toHaveURL(/search/);
+  25  | });
+  26  | 
+  27  | // Test Case 2
+  28  | test('Search product with empty keyword', async ({ page }) => {
+  29  |   await openHomePage(page);
+  30  | 
+  31  |   await page.locator('button.search-box-button').click();
+  32  | 
+  33  |   await expect(page).toHaveURL(/\/($|search\?q=)/);
+  34  | });
+  35  | 
+  36  | // Test Case 3
+  37  | test('Navigate to Computers category', async ({ page }) => {
+  38  |   await openHomePage(page);
+  39  | 
+  40  |   await page.goto('https://demo.nopcommerce.com/computers', {
+  41  |     waitUntil: 'domcontentloaded',
+  42  |     timeout: 60000
+  43  |   });
+  44  | 
+  45  |   await expect(page).toHaveURL(/computers/);
+  46  | });
+  47  | 
+  48  | // Test Case 4
+  49  | test('Search product with another valid keyword', async ({ page }) => {
+  50  |   await openHomePage(page);
+  51  | 
+  52  |   await page.fill('.search-box-text', 'book');
+  53  |   await page.locator('button.search-box-button').click();
+  54  | 
+  55  |   await expect(page).toHaveURL(/search/);
+  56  | });
+  57  | 
+  58  | // Test Case 5
+  59  | test('Validate search textbox visibility', async ({ page }) => {
+  60  |   await openHomePage(page);
+  61  | 
+  62  |   await expect(page.locator('.search-box-text')).toBeVisible();
+  63  | });
+  64  | 
+  65  | // Test Case 6
+  66  | test('Validate search button visibility', async ({ page }) => {
+  67  |   await openHomePage(page);
+  68  | 
+  69  |   await expect(page.locator('button.search-box-button')).toBeVisible();
+  70  | });
+  71  | 
+  72  | // Test Case 7
+  73  | test('Validate homepage title', async ({ page }) => {
+  74  |   await openHomePage(page);
+  75  | 
+  76  |   await expect(page).toHaveTitle(/nopCommerce demo store/);
+  77  | });
+  78  | 
+  79  | // Test Case 8
+  80  | test('Validate Computers page heading', async ({ page }) => {
+  81  |   await page.goto('https://demo.nopcommerce.com/computers', {
+  82  |     waitUntil: 'domcontentloaded',
+  83  |     timeout: 60000
+  84  |   });
+  85  | 
+> 86  |   await expect(page.locator('h1')).toContainText('Computers');
+      |                                    ^ Error: expect(locator).toContainText(expected) failed
+  87  | });
+  88  | 
+  89  | // Test Case 9
+  90  | test('Validate search textbox accepts input', async ({ page }) => {
+  91  |   await openHomePage(page);
+  92  | 
+  93  |   await page.fill('.search-box-text', 'laptop');
+  94  | 
+  95  |   await expect(page.locator('.search-box-text')).toHaveValue('laptop');
+  96  | });
+  97  | 
+  98  | // Test Case 10
+  99  | test('Validate Electronics category page', async ({ page }) => {
+  100 |   await page.goto('https://demo.nopcommerce.com/electronics', {
+  101 |     waitUntil: 'domcontentloaded',
+  102 |     timeout: 60000
+  103 |   });
+  104 | 
+  105 |   await expect(page.locator('h1')).toContainText('Electronics');
+  106 | });
+  107 | 
+  108 | // Test Case 11
+  109 | test('Validate Apparel category page', async ({ page }) => {
+  110 |   await page.goto('https://demo.nopcommerce.com/apparel', {
+  111 |     waitUntil: 'domcontentloaded',
+  112 |     timeout: 60000
+  113 |   });
+  114 | 
+  115 |   await expect(page.locator('h1')).toContainText('Apparel');
+  116 | });
+  117 | 
+  118 | // Test Case 12
+  119 | test('Validate Books category page', async ({ page }) => {
+  120 |   await page.goto('https://demo.nopcommerce.com/books', {
+  121 |     waitUntil: 'domcontentloaded',
+  122 |     timeout: 60000
+  123 |   });
+  124 | 
+  125 |   await expect(page.locator('h1')).toContainText('Books');
+  126 | });
+  127 | 
+  128 | // Test Case 13
+  129 | test('Validate search result page opens', async ({ page }) => {
+  130 |   await openHomePage(page);
+  131 | 
+  132 |   await page.fill('.search-box-text', 'camera');
+  133 |   await page.locator('button.search-box-button').click();
+  134 | 
+  135 |   await expect(page).toHaveURL(/search/);
+  136 | });
+  137 | 
+  138 | // Test Case 14
+  139 | test('Validate homepage logo visibility', async ({ page }) => {
+  140 |   await openHomePage(page);
+  141 | 
+  142 |   await expect(page.locator('.header-logo')).toBeVisible();
+  143 | });
+  144 | 
+  145 | // Test Case 15
+  146 | test('Validate search button enabled state', async ({ page }) => {
+  147 |   await openHomePage(page);
+  148 | 
+  149 |   await expect(page.locator('button.search-box-button')).toBeEnabled();
+  150 | });
+```

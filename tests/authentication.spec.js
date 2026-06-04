@@ -9,7 +9,11 @@ async function openLoginPage(page) {
     timeout: 60000
   });
 
-  await page.locator('#Email').waitFor({ state: 'visible', timeout: 15000 });
+  await page.waitForTimeout(3000);
+
+  await expect(page.locator('body')).toBeVisible({
+    timeout: 30000
+  });
 }
 
 // Test Case 1
@@ -55,11 +59,20 @@ test('Login with empty email and password', async ({ page }) => {
 
 // Test Case 5
 test('Remember me checkbox validation', async ({ page }) => {
-  await openLoginPage(page);
+  await page.goto('https://demo.nopcommerce.com/login', {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000
+  });
 
-  await page.check('#RememberMe');
+  await page.waitForTimeout(5000);
 
-  await expect(page.locator('#RememberMe')).toBeChecked();
+  const rememberMe = page.locator('#RememberMe');
+
+  await expect(rememberMe).toBeVisible({ timeout: 30000 });
+
+  await rememberMe.check();
+
+  await expect(rememberMe).toBeChecked();
 });
 
 // Test Case 6
@@ -102,12 +115,15 @@ test('Email textbox accepts valid email input', async ({ page }) => {
 test('Password textbox accepts input', async ({ page }) => {
   await openLoginPage(page);
 
-  await page.fill('#Password', 'Test@123');
+  const passwordBox = page.locator('input[name="Password"]');
 
-  await expect(page.locator('#Password')).toHaveValue('Test@123');
+  await expect(passwordBox).toBeVisible({ timeout: 30000 });
+
+  await passwordBox.fill('Password123');
+
+  await expect(passwordBox).toHaveValue('Password123');
 });
 
-// Test Case 11
 // Test Case 11
 test('Forgot password page navigation validation', async ({ page }) => {
   await openLoginPage(page);

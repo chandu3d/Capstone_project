@@ -1,8 +1,8 @@
 class LoginPage {
   constructor(page) {
     this.page = page;
-    this.emailInput = '#Email';
-    this.passwordInput = '#Password';
+    this.emailInput = 'input[name="Email"]';
+    this.passwordInput = 'input[name="Password"]';
     this.loginButton = 'button.login-button';
     this.rememberMeCheckbox = '#RememberMe';
     this.forgotPasswordLink = 'text=Forgot password?';

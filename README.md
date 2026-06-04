@@ -95,7 +95,9 @@ https://chandu3d.github.io/Capstone_project/
 ## How to Run
 
 npm install
+
 npx playwright install
+
 npx playwright test
 
 ## Author

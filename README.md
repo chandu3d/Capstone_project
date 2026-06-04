@@ -1,15 +1,15 @@
-#nopCommerce Capstone Project
+# nopCommerce Capstone Project
 
-##Project Overview
+## Project Overview
 
 This project is an End-to-End Test Automation Framework developed using Playwright with JavaScript for the nopCommerce Demo Store application.
 
-##Website Details
+## Website Details
 
 - Website Name: nopCommerce Demo Store
 - Website URL: https://demo.nopcommerce.com/
 
-##Tech Stack
+## Tech Stack
 
 - Playwright
 - JavaScript
@@ -17,65 +17,65 @@ This project is an End-to-End Test Automation Framework developed using Playwrig
 - GitHub
 - Allure Reports
 
-##Modules Covered
+## Modules Covered
 
-###1. Authentication Management
+### 1. Authentication Management
 
 - User Login
 - User Logout
 - Invalid Login Validation
 - Forgot Password Validation
 
-###2. Product Management
+### 2. Product Management
 
 - Product Search
 - Category Navigation
 - Product Sorting
 - Product Details Validation
 
-###3. Cart Management
+### 3. Cart Management
 
 - Add Product to Cart
 - Update Quantity
 - Remove Product
 - Cart Validation
 
-###4. Checkout & Payment Flow
+### 4. Checkout & Payment Flow
 
 - Checkout Process
 - Address Validation
 - Payment Method Validation
 - Order Confirmation
 
-###5. Compare & Order Management
+### 5. Compare & Order Management
 
 - Product Comparison
 - Order Placement
 - Order History
 - Reorder Validation
 
-###6. Navigation & UI Validation
+### 6. Navigation & UI Validation
 
 - Header Validation
 - Footer Validation
 - Menu Navigation
 - Responsive UI Checks
 
-###7. API Testing & Mocking
+### 7. API Testing & Mocking
 
 - API Response Validation
 - Route Interception
 - Mock API Responses
 - Network Monitoring
 
-###8. Reporting & CI/CD
+### 8. Reporting & CI/CD
 
 - Allure Reports
 - GitHub Actions
 - Automated Test Execution
 - Test Result Publishing
 
-##Project Structure
+## Project Structure
 
 Capstone_Project
 │
@@ -86,12 +86,18 @@ Capstone_Project
 ├── package.json
 └── README.md
 
-##How to Run
+## Live Links
+### GitHub Repository
+https://github.com/chandu3d/Capstone_project
+### Allure Report
+https://chandu3d.github.io/Capstone_project/
+
+## How to Run
 
 npm install
 npx playwright install
 npx playwright test
 
-##Author
+## Author
 
-###Devineni Chandu
+### Devineni Chandu

@@ -89,8 +89,6 @@ Capstone_Project
 ## Live Links
 ### GitHub Repository
 https://github.com/chandu3d/Capstone_project
-### Allure Report
-https://chandu3d.github.io/Capstone_project/
 
 ## How to Run
 
